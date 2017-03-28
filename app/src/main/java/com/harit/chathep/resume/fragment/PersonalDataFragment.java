@@ -3,10 +3,12 @@ package com.harit.chathep.resume.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,8 @@ public class PersonalDataFragment extends Fragment {
 
     ImageView ivMyImage;
     TextView tvName,tvSex,tvAge,tvDOB,tvRegion,tvMilitaryStatus, tvMaritalStatus,tvNationality;
+    CardView personalContent;
+    ProgressBar progressBar;
     public PersonalDataFragment() {
         super();
     }
@@ -79,14 +83,17 @@ public class PersonalDataFragment extends Fragment {
         tvRegion = (TextView) rootView.findViewById(R.id.tvRegion);
         tvMilitaryStatus = (TextView) rootView.findViewById(R.id.tvMilitaryStatus);
         tvMaritalStatus = (TextView) rootView.findViewById(R.id.tvMaritalStatus);
-
+        progressBar = (ProgressBar) rootView.findViewById(R.id.personalProgressbar);
+        personalContent = (CardView) rootView.findViewById(R.id.personalContent);
         Call<PersonalDataCollectionDao> call = HttpManager.getInstance().getService().loadPersonalData();
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<PersonalDataCollectionDao>() {
             @Override
             public void onResponse(Call<PersonalDataCollectionDao> call, Response<PersonalDataCollectionDao> response) {
                 if (response.isSuccessful()) {
                     PersonalDataCollectionDao dao = response.body();
                     setPersonalDataView(dao);
+                    personalContent.setVisibility(View.VISIBLE);
                 } else {
                     try {
                         Toast.makeText(Contextor.getInstance().getContext(),
@@ -97,6 +104,8 @@ public class PersonalDataFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                progressBar.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
@@ -105,6 +114,7 @@ public class PersonalDataFragment extends Fragment {
                         t.toString(),
                         Toast.LENGTH_LONG)
                         .show();
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }

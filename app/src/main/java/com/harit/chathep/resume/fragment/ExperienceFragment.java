@@ -3,10 +3,12 @@ package com.harit.chathep.resume.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.harit.chathep.resume.R;
@@ -30,6 +32,7 @@ public class ExperienceFragment extends Fragment {
 
     ListView listView;
     ExperienceListAdapter listAdapter;
+    ProgressBar progressBar;
     public ExperienceFragment() {
         super();
     }
@@ -66,11 +69,13 @@ public class ExperienceFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
-        listView = (ListView) rootView.findViewById(R.id.experienceListView);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.experienceProgressbar);
+        listView = (ListView) rootView.findViewById(R.id.listView);
         listAdapter = new ExperienceListAdapter();
         listView.setAdapter(listAdapter);
 
         Call<ExperienceDataCollectionDao> call = HttpManager.getInstance().getService().loadExperienceList();
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ExperienceDataCollectionDao>() {
             @Override
             public void onResponse(Call<ExperienceDataCollectionDao> call, Response<ExperienceDataCollectionDao> response) {
@@ -78,10 +83,7 @@ public class ExperienceFragment extends Fragment {
                     ExperienceDataCollectionDao dao = response.body();
                     listAdapter.setDao(dao);
                     listAdapter.notifyDataSetChanged();
-                    Toast.makeText(Contextor.getInstance().getContext(),
-                            dao.getData().get(0).getCompanyName(),
-                            Toast.LENGTH_LONG)
-                            .show();
+                    listView.setVisibility(View.VISIBLE);
                 } else {
                     try {
                         Toast.makeText(Contextor.getInstance().getContext(),
@@ -92,6 +94,8 @@ public class ExperienceFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                progressBar.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
@@ -100,6 +104,7 @@ public class ExperienceFragment extends Fragment {
                         t.toString(),
                         Toast.LENGTH_LONG)
                         .show();
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }

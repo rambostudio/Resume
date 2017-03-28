@@ -1,10 +1,12 @@
 package com.harit.chathep.resume.adapter;
 
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 
 import com.harit.chathep.resume.R;
 import com.harit.chathep.resume.dao.ExperienceDataCollectionDao;
@@ -16,8 +18,8 @@ import com.harit.chathep.resume.view.ExperienceListItem;
  */
 
 public class ExperienceListAdapter extends BaseAdapter {
-    ExperienceDataCollectionDao dao;
-    int lastPosition = -1;
+    private ExperienceDataCollectionDao dao;
+    private int lastPosition = -1;
 
     public void setDao(ExperienceDataCollectionDao dao) {
         this.dao = dao;
@@ -44,8 +46,11 @@ public class ExperienceListAdapter extends BaseAdapter {
         return 0;
     }
 
+
+
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
+
         ExperienceListItem item;
         if (view != null) {
             item = (ExperienceListItem) view;

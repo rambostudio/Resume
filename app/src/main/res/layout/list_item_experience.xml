@@ -23,14 +23,12 @@
                     android:id="@+id/tvCompanyName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Bangkok Life Assuarance PCL"
                     android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/tvPeriod"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="JANUARY 2016 - December 2016"
                     android:textSize="14sp" />
 
                 <TextView
@@ -38,31 +36,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="Programmer"
                     android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/ivCompanyLogo"
-                    android:layout_width="150dp"
-                    android:layout_height="90dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="120dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="16dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/loading" />
+                    android:layout_marginBottom="8dp"
+                    android:scaleType="fitCenter" />
 
                 <TextView
                     android:id="@+id/tvWorkTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Develop web application for insurrance business."
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvProjectName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="Insurance broker system"
+                    android:layout_marginBottom="4dp"
                     android:textSize="14sp" />
 
                 <TextView
