@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/loading" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Bangkok Life Assuarance PCL, Programmer
+JANUARY 2016 - December 2016
+Develop web application for insurrance business.
+Insurance broker system
+- Use C# .NET MVC4.5 in Visual Studio 2015
+- Store data in Oracle
+- Use Entity Framwork for manage database
+- Share data and business logic with WCF web service
+- Use DevExpress for create report
+- Create display by Razor-Syntax, Html5, CSS3
+and Bootstrap3 library
+- Interactive user with Jquery and AngularJS
+- Control source code by SVN" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:elevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/loading" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Comtex Bangkok co Ltd, Programmer
+November 2014 - December 2016
+Develop web application about work tracting for
+construction company.
+- Use C# .NET MVC4 in Visual Studio 2013
+- Store data in MS SQL 2012
+- Use Linq to SQL for manage database
+- Query a complex data with SQL and Store procedure
+- Create display by Razor-Syntax, Html5, CSS3
+and Bootstrap3 library
+- Interactive user with Jquery and AngularJS
+- Create API pass Json data for mobile platform
+- Use SignalR for update realtime data
+- Control source code by SVN" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
