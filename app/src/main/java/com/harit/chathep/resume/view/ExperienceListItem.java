@@ -94,7 +94,7 @@ public class ExperienceListItem extends BaseCustomViewGroup {
     public void setWorkDescriptionText(List<String> text_list) {
         String text = "";
         for(String s : text_list) {
-            text = text+(String.format("\u2022 %s \n ", s));
+            text = text+(String.format("\u2022 %s \n", s));
         }
         tvWorkDescription.setText(text);
     }

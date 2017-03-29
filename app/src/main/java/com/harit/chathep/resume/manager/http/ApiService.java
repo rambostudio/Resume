@@ -2,6 +2,7 @@ package com.harit.chathep.resume.manager.http;
 
 import com.harit.chathep.resume.dao.ExperienceDataCollectionDao;
 import com.harit.chathep.resume.dao.PersonalDataCollectionDao;
+import com.harit.chathep.resume.dao.SkillDataCollectionDao;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -16,5 +17,8 @@ public interface ApiService {
 
     @GET("experience.php")
     Call<ExperienceDataCollectionDao> loadExperienceList();
+
+    @GET("skill.php")
+    Call<SkillDataCollectionDao> loadSkillList();
 
 }
