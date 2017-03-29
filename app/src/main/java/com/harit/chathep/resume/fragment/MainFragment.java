@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.inthecheesefactory.thecheeselibrary.view.SlidingTabLayout;
 @SuppressWarnings("unused")
 public class MainFragment extends Fragment {
 
+    Toolbar toolbar;
     ViewPager viewPager;
     SlidingTabLayout slidingTabLayout;
     public MainFragment() {
@@ -57,7 +59,6 @@ public class MainFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
-
         viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);

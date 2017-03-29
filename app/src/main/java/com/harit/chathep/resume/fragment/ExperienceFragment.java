@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.harit.chathep.resume.R;
 import com.harit.chathep.resume.adapter.ExperienceListAdapter;
+import com.harit.chathep.resume.adapter.ExperienceRecyclerViewAdapter;
 import com.harit.chathep.resume.dao.ExperienceDataCollectionDao;
 import com.harit.chathep.resume.manager.HttpManager;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
@@ -29,7 +32,7 @@ import retrofit2.Response;
  */
 @SuppressWarnings("unused")
 public class ExperienceFragment extends Fragment {
-
+    RecyclerView recyclerView;
     ListView listView;
     ExperienceListAdapter listAdapter;
     ProgressBar progressBar;
@@ -69,10 +72,14 @@ public class ExperienceFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
-        progressBar = (ProgressBar) rootView.findViewById(R.id.experienceProgressbar);
-        listView = (ListView) rootView.findViewById(R.id.listView);
-        listAdapter = new ExperienceListAdapter();
-        listView.setAdapter(listAdapter);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.experienceProgressbar_test);
+//        listView = (ListView) rootView.findViewById(R.id.listView);
+//        listAdapter = new ExperienceListAdapter();
+//        listView.setAdapter(listAdapter);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_test);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
 
         Call<ExperienceDataCollectionDao> call = HttpManager.getInstance().getService().loadExperienceList();
         progressBar.setVisibility(View.VISIBLE);
@@ -81,9 +88,11 @@ public class ExperienceFragment extends Fragment {
             public void onResponse(Call<ExperienceDataCollectionDao> call, Response<ExperienceDataCollectionDao> response) {
                 if (response.isSuccessful()) {
                     ExperienceDataCollectionDao dao = response.body();
-                    listAdapter.setDao(dao);
-                    listAdapter.notifyDataSetChanged();
-                    listView.setVisibility(View.VISIBLE);
+//                    listAdapter.setDao(dao);
+//                    listAdapter.notifyDataSetChanged();
+//                    listView.setVisibility(View.VISIBLE);
+                    ExperienceRecyclerViewAdapter recyclerViewAdapter = new ExperienceRecyclerViewAdapter(dao.getData(), getContext());
+                    recyclerView.setAdapter(recyclerViewAdapter);
                 } else {
                     try {
                         Toast.makeText(Contextor.getInstance().getContext(),

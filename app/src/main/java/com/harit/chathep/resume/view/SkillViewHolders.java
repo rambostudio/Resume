@@ -20,14 +20,13 @@ public class SkillViewHolders extends RecyclerView.ViewHolder implements View.On
 
     public SkillViewHolders(View itemView) {
         super(itemView);
-        itemView.setOnClickListener(this);
         tvSkillTitle = (TextView) itemView.findViewById(R.id.tvSkillTitle);
         tvSkillDescription = (TextView) itemView.findViewById(R.id.tvSkillDescription);
     }
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
+
     }
 
     public void setSkillTitleText(String text) {
