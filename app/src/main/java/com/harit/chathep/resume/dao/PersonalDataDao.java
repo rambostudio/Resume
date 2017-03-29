@@ -33,6 +33,13 @@ public class PersonalDataDao {
     @SerializedName("image_url")
     private String imageUrl;
 
+    @SerializedName("address")
+    private String address;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("tel")
+    private String tel;
+
     public String getName() {
         return name;
     }
@@ -103,5 +110,29 @@ public class PersonalDataDao {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 }

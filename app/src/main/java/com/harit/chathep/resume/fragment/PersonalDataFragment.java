@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class PersonalDataFragment extends Fragment {
 
     ImageView ivMyImage;
-    TextView tvName,tvSex,tvAge,tvDOB,tvRegion,tvMilitaryStatus, tvMaritalStatus,tvNationality;
+    TextView tvName,tvSex,tvAge,tvDOB,tvRegion,tvMilitaryStatus, tvMaritalStatus,tvNationality,tvEmail,tvAddress,tvTel;
     CardView personalContent;
     ProgressBar progressBar;
     public PersonalDataFragment() {
@@ -83,6 +83,9 @@ public class PersonalDataFragment extends Fragment {
         tvRegion = (TextView) rootView.findViewById(R.id.tvRegion);
         tvMilitaryStatus = (TextView) rootView.findViewById(R.id.tvMilitaryStatus);
         tvMaritalStatus = (TextView) rootView.findViewById(R.id.tvMaritalStatus);
+        tvAddress = (TextView) rootView.findViewById(R.id.tvAddress);
+        tvTel = (TextView) rootView.findViewById(R.id.tvTell);
+        tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
         progressBar = (ProgressBar) rootView.findViewById(R.id.personalProgressbar);
         personalContent = (CardView) rootView.findViewById(R.id.personalContent);
         Call<PersonalDataCollectionDao> call = HttpManager.getInstance().getService().loadPersonalData();
@@ -104,7 +107,7 @@ public class PersonalDataFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
 
             }
 
@@ -114,7 +117,7 @@ public class PersonalDataFragment extends Fragment {
                         t.toString(),
                         Toast.LENGTH_LONG)
                         .show();
-                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -130,6 +133,9 @@ public class PersonalDataFragment extends Fragment {
             tvMilitaryStatus.setText(dao.getData().getMilitaryStatus());
             tvMaritalStatus.setText(dao.getData().getMaritalStatus());
             setMyImage(dao.getData().getImageUrl());
+            tvAddress.setText(dao.getData().getAddress());
+            tvEmail.setText(dao.getData().getEmail());
+            tvTel.setText(dao.getData().getTel());
         }
     }
 
@@ -163,7 +169,6 @@ public class PersonalDataFragment extends Fragment {
     private void setMyImage(String url) {
         Glide.with(getContext())
                 .load(url)
-//                .placeholder(R.drawable.loading)
                 .diskCacheStrategy(DiskCacheStrategy.ALL) // ใช้เมื่อรูปในแอพมีการแสดงผลหลายขนาาด
                 .into(ivMyImage);
     }
