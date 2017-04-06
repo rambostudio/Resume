@@ -27,20 +27,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#D50000"
-                    >
+                    android:background="#D50000">
+
                     <ImageView
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
                         android:id="@+id/ivUniversityLogo"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/imageview_kmitl_logo_height"
                         android:layout_gravity="center"
-                        android:scaleType="fitCenter"
-                        />
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:scaleType="fitCenter" />
                 </FrameLayout>
 
 
@@ -57,8 +57,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="King Mongkut’s Institute of
-Technology LadKrabang"
                         android:textSize="@dimen/txt_title"
                         android:textStyle="bold" />
 
@@ -66,28 +64,24 @@ Technology LadKrabang"
                         android:id="@+id/tvEducationPeriod"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2010 - 2013"
                         android:textSize="@dimen/txt_description" />
 
                     <TextView
                         android:id="@+id/tvEducationDegree"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bachelor’s Degree of Engineering"
                         android:textSize="@dimen/txt_description" />
 
                     <TextView
                         android:id="@+id/tvEducationMajor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Information Engineering"
                         android:textSize="@dimen/txt_description" />
 
                     <TextView
                         android:id="@+id/tvEducationGPA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="GPA 2.90"
                         android:textSize="@dimen/txt_description" />
 
                 </LinearLayout>

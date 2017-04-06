@@ -12,10 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.harit.chathep.resume.R;
+import com.harit.chathep.resume.adapter.ExperienceRecyclerViewAdapter;
 import com.harit.chathep.resume.adapter.SkillRecyclerViewAdapter;
 import com.harit.chathep.resume.dao.ExperienceDataCollectionDao;
 import com.harit.chathep.resume.dao.SkillDataCollectionDao;
 import com.harit.chathep.resume.manager.HttpManager;
+import com.harit.chathep.resume.util.JsonUtil;
+import com.harit.chathep.resume.util.NetworkStateUtil;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.io.IOException;
@@ -33,6 +36,7 @@ public class SkillFragment extends Fragment {
     RecyclerView recyclerView;
     StaggeredGridLayoutManager gaggeredGridLayoutManager;
     ProgressBar progressBar;
+
     public SkillFragment() {
         super();
     }
@@ -75,17 +79,35 @@ public class SkillFragment extends Fragment {
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
+        if (NetworkStateUtil.isOnline()) {
+            getDataFromServer();
+        } else {
+            getDataFromLocal();
+        }
 
+    }
+
+    private void getDataFromLocal() {
+        SkillDataCollectionDao dao = (SkillDataCollectionDao) JsonUtil.jsonToModel(SkillDataCollectionDao.class, "skill.json");
+        setDataView(dao);
+    }
+
+    private void setDataView(SkillDataCollectionDao dao) {
+        SkillRecyclerViewAdapter skillRecyclerViewAdapter = new SkillRecyclerViewAdapter(dao.getData(), getContext());
+        recyclerView.setAdapter(skillRecyclerViewAdapter);
+        progressBar.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void getDataFromServer() {
         Call<SkillDataCollectionDao> call = HttpManager.getInstance().getService().loadSkillList();
+
         call.enqueue(new Callback<SkillDataCollectionDao>() {
             @Override
             public void onResponse(Call<SkillDataCollectionDao> call, Response<SkillDataCollectionDao> response) {
                 if (response.isSuccessful()) {
                     SkillDataCollectionDao dao = response.body();
-                    SkillRecyclerViewAdapter skillRecyclerViewAdapter = new SkillRecyclerViewAdapter(dao.getData(),getContext());
-                    recyclerView.setAdapter(skillRecyclerViewAdapter);
-
-                    recyclerView.setVisibility(View.VISIBLE);
+                    setDataView(dao);
                 } else {
                     try {
                         Toast.makeText(Contextor.getInstance().getContext(),

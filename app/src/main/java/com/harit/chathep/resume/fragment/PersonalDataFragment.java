@@ -17,6 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.harit.chathep.resume.R;
 import com.harit.chathep.resume.dao.PersonalDataCollectionDao;
 import com.harit.chathep.resume.manager.HttpManager;
+import com.harit.chathep.resume.util.JsonUtil;
+import com.harit.chathep.resume.util.NetworkStateUtil;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.io.IOException;
@@ -33,9 +35,10 @@ import retrofit2.Response;
 public class PersonalDataFragment extends Fragment {
 
     ImageView ivMyImage;
-    TextView tvName,tvSex,tvAge,tvDOB,tvRegion,tvMilitaryStatus, tvMaritalStatus,tvNationality,tvEmail,tvAddress,tvTel;
+    TextView tvName, tvSex, tvAge, tvDOB, tvRegion, tvMilitaryStatus, tvMaritalStatus, tvNationality, tvEmail, tvAddress, tvTel;
     CardView personalContent;
     ProgressBar progressBar;
+
     public PersonalDataFragment() {
         super();
     }
@@ -88,15 +91,24 @@ public class PersonalDataFragment extends Fragment {
         tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
         progressBar = (ProgressBar) rootView.findViewById(R.id.personalProgressbar);
         personalContent = (CardView) rootView.findViewById(R.id.personalContent);
-        Call<PersonalDataCollectionDao> call = HttpManager.getInstance().getService().loadPersonalData();
         progressBar.setVisibility(View.VISIBLE);
+
+        if (NetworkStateUtil.isOnline()) {
+            getDataFromServer();
+        } else {
+            getDataFromLocal();
+        }
+    }
+
+    private void getDataFromServer() {
+        Call<PersonalDataCollectionDao> call = HttpManager.getInstance().getService().loadPersonalData();
         call.enqueue(new Callback<PersonalDataCollectionDao>() {
             @Override
             public void onResponse(Call<PersonalDataCollectionDao> call, Response<PersonalDataCollectionDao> response) {
                 if (response.isSuccessful()) {
                     PersonalDataCollectionDao dao = response.body();
-                    setPersonalDataView(dao);
-                    personalContent.setVisibility(View.VISIBLE);
+                    setDataView(dao);
+
                 } else {
                     try {
                         Toast.makeText(Contextor.getInstance().getContext(),
@@ -122,7 +134,16 @@ public class PersonalDataFragment extends Fragment {
         });
     }
 
-    private void setPersonalDataView(PersonalDataCollectionDao dao) {
+    private void getDataFromLocal() {
+
+        PersonalDataCollectionDao dao = (PersonalDataCollectionDao) JsonUtil.jsonToModel(PersonalDataCollectionDao.class, "personal_data.json");
+        setDataView(dao);
+        progressBar.setVisibility(View.GONE);
+        personalContent.setVisibility(View.VISIBLE);
+    }
+
+    private void setDataView(PersonalDataCollectionDao dao) {
+        personalContent.setVisibility(View.VISIBLE);
         if (dao != null && dao.getData() != null) {
             tvName.setText(dao.getData().getName());
             tvSex.setText(dao.getData().getSex());
@@ -167,10 +188,20 @@ public class PersonalDataFragment extends Fragment {
     }
 
     private void setMyImage(String url) {
-        Glide.with(getContext())
-                .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL) // ใช้เมื่อรูปในแอพมีการแสดงผลหลายขนาาด
-                .into(ivMyImage);
+
+        if (NetworkStateUtil.isOnline()) {
+            ivMyImage.getLayoutParams().height = (int) getResources().getDimension(R.dimen.imageview_myimage_height);
+            ivMyImage.getLayoutParams().width = (int) getResources().getDimension(R.dimen.imageview_myimage_width);
+            ivMyImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Glide.with(getContext())
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // ใช้เมื่อรูปในแอพมีการแสดงผลหลายขนาาด
+                    .into(ivMyImage);
+        } else {
+            ivMyImage.setBackgroundResource(R.drawable.round_image);
+        }
+
+
     }
 
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +18,10 @@ import com.harit.chathep.resume.R;
 import com.harit.chathep.resume.adapter.ExperienceListAdapter;
 import com.harit.chathep.resume.adapter.ExperienceRecyclerViewAdapter;
 import com.harit.chathep.resume.dao.ExperienceDataCollectionDao;
+import com.harit.chathep.resume.dao.PersonalDataCollectionDao;
 import com.harit.chathep.resume.manager.HttpManager;
+import com.harit.chathep.resume.util.JsonUtil;
+import com.harit.chathep.resume.util.NetworkStateUtil;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.io.IOException;
@@ -72,15 +76,23 @@ public class ExperienceFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
-        progressBar = (ProgressBar) rootView.findViewById(R.id.experienceProgressbar_test);
-//        listView = (ListView) rootView.findViewById(R.id.listView);
-//        listAdapter = new ExperienceListAdapter();
-//        listView.setAdapter(listAdapter);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_test);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.experienceProgressbar);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
+        if (NetworkStateUtil.isOnline()) {
+            getDataFromServer();
+        } else {
+            getDataFromLocal();
+        }
+    }
+    private void initRecyclerView() {
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+    }
+
+
+    private void getDataFromServer() {
         Call<ExperienceDataCollectionDao> call = HttpManager.getInstance().getService().loadExperienceList();
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ExperienceDataCollectionDao>() {
@@ -88,11 +100,7 @@ public class ExperienceFragment extends Fragment {
             public void onResponse(Call<ExperienceDataCollectionDao> call, Response<ExperienceDataCollectionDao> response) {
                 if (response.isSuccessful()) {
                     ExperienceDataCollectionDao dao = response.body();
-//                    listAdapter.setDao(dao);
-//                    listAdapter.notifyDataSetChanged();
-//                    listView.setVisibility(View.VISIBLE);
-                    ExperienceRecyclerViewAdapter recyclerViewAdapter = new ExperienceRecyclerViewAdapter(dao.getData(), getContext());
-                    recyclerView.setAdapter(recyclerViewAdapter);
+                    setDataView(dao);
                 } else {
                     try {
                         Toast.makeText(Contextor.getInstance().getContext(),
@@ -116,6 +124,18 @@ public class ExperienceFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    private void getDataFromLocal() {
+        ExperienceDataCollectionDao dao = (ExperienceDataCollectionDao) JsonUtil.jsonToModel(ExperienceDataCollectionDao.class, "experience.json");
+        setDataView(dao);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void setDataView(ExperienceDataCollectionDao dao) {
+        ExperienceRecyclerViewAdapter recyclerViewAdapter = new ExperienceRecyclerViewAdapter(dao.getData(), getContext());
+        initRecyclerView();
+        recyclerView.setAdapter(recyclerViewAdapter);
     }
 
     @Override

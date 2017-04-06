@@ -3,11 +3,15 @@ package com.harit.chathep.resume.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.ActionBarOverlayLayout;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +22,8 @@ import com.harit.chathep.resume.R;
 import com.harit.chathep.resume.dao.EducationDataCollectionDao;
 import com.harit.chathep.resume.dao.ExperienceDataCollectionDao;
 import com.harit.chathep.resume.manager.HttpManager;
+import com.harit.chathep.resume.util.JsonUtil;
+import com.harit.chathep.resume.util.NetworkStateUtil;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.io.IOException;
@@ -35,8 +41,9 @@ public class EducationFragment extends Fragment {
 
     CardView educationContent;
     ImageView ivUniversityLogo;
-    TextView tvUniversity,tvPeriod,tvGPA,tvDegree, tvMajor;
+    TextView tvUniversity, tvPeriod, tvGPA, tvDegree, tvMajor;
     ProgressBar progressBar;
+
     public EducationFragment() {
         super();
     }
@@ -86,13 +93,29 @@ public class EducationFragment extends Fragment {
         educationContent.setVisibility(View.INVISIBLE);
 
         Call<EducationDataCollectionDao> call = HttpManager.getInstance().getService().loadEducationList();
+        if (NetworkStateUtil.isOnline()) {
+            getDataFromServer(call);
+        } else {
+            getDataFromLocal();
+        }
+
+
+    }
+
+    private void getDataFromLocal() {
+        EducationDataCollectionDao dao = (EducationDataCollectionDao) JsonUtil.jsonToModel(EducationDataCollectionDao.class, "education.json");
+        setDataView(dao);
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void getDataFromServer(Call<EducationDataCollectionDao> call) {
         call.enqueue(new Callback<EducationDataCollectionDao>() {
             @Override
             public void onResponse(Call<EducationDataCollectionDao> call, Response<EducationDataCollectionDao> response) {
                 if (response.isSuccessful()) {
                     EducationDataCollectionDao dao = response.body();
-                    setEducationDataView(dao);
-                    educationContent.setVisibility(View.VISIBLE);
+                    setDataView(dao);
+
 
                 } else {
                     try {
@@ -116,11 +139,10 @@ public class EducationFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
-
-
     }
 
-    private void setEducationDataView(EducationDataCollectionDao dao) {
+    private void setDataView(EducationDataCollectionDao dao) {
+        educationContent.setVisibility(View.VISIBLE);
         if (dao != null && dao.getData() != null) {
             tvUniversity.setText(dao.getData().getUniversity());
             tvPeriod.setText(dao.getData().getPeriod());
@@ -131,11 +153,17 @@ public class EducationFragment extends Fragment {
         }
 
     }
+
     private void setUniversityLogo(String url) {
-        Glide.with(getContext())
-                .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL) // ใช้เมื่อรูปในแอพมีการแสดงผลหลายขนาาด
-                .into(ivUniversityLogo);
+        if (NetworkStateUtil.isOnline()) {
+            Glide.with(getContext())
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // ใช้เมื่อรูปในแอพมีการแสดงผลหลายขนาาด
+                    .into(ivUniversityLogo);
+        } else {
+            ivUniversityLogo.setImageResource(R.drawable.kmitl_logo);
+        }
+
     }
 
     @Override
