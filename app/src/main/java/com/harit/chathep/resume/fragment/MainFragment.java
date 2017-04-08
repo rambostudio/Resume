@@ -2,8 +2,10 @@ package com.harit.chathep.resume.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,7 @@ public class MainFragment extends Fragment {
 
     Toolbar toolbar;
     ViewPager viewPager;
-    SlidingTabLayout slidingTabLayout;
+    TabLayout tabLayout;
     public MainFragment() {
         super();
     }
@@ -59,12 +61,15 @@ public class MainFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
+        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
         viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
 
-        slidingTabLayout = (SlidingTabLayout) rootView.findViewById(R.id.slidingTabLayout);
-        slidingTabLayout.setViewPager(viewPager);
+        tabLayout = (TabLayout) rootView.findViewById(R.id.slidingTabLayout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override

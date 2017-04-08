@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ public class PersonalDataFragment extends Fragment {
 
     ImageView ivMyImage;
     TextView tvName, tvSex, tvAge, tvDOB, tvRegion, tvMilitaryStatus, tvMaritalStatus, tvNationality, tvEmail, tvAddress, tvTel;
-    CardView personalContent;
+    LinearLayout personalContent;
     ProgressBar progressBar;
 
     public PersonalDataFragment() {
@@ -90,7 +91,7 @@ public class PersonalDataFragment extends Fragment {
         tvTel = (TextView) rootView.findViewById(R.id.tvTell);
         tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
         progressBar = (ProgressBar) rootView.findViewById(R.id.personalProgressbar);
-        personalContent = (CardView) rootView.findViewById(R.id.personalContent);
+        personalContent = (LinearLayout) rootView.findViewById(R.id.personalContent);
         progressBar.setVisibility(View.VISIBLE);
 
         if (NetworkStateUtil.isOnline()) {

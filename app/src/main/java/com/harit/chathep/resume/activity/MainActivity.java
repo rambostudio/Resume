@@ -13,7 +13,7 @@ import com.harit.chathep.resume.R;
 import com.harit.chathep.resume.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
-    Toolbar toolbar;
+//    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initInstances() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
     }
 
